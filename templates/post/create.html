@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    {% if user.is_authenticated %}
+      <p>こんにちは！{{ user.username }}</p>
+      <a href="{% url 'logout' %}">ログアウト</a>
+      <h1>新規投稿</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit btn btn-primary">投稿</button>
+      </form>
+    {% else %}
+      <p>ログインしていません。</p>
+      <a href="{% url 'login' %}">ログイン</a>
+      <a href="{% url 'signup' %}">登録</a>
+    {% endif %}
+  </div>
+{% endblock %}

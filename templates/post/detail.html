@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h1>投稿詳細</h1>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ object.owner }}</h5>
+        <p class="card-text">{{ object.content }}</p>
+        <p class="card-text  text-right">{{ object.created_at }}</p>
+        <a href="{% url 'index' %}" class="btn btn-primary">トップに戻る</a>
+        {% if user.is_authenticated %}
+          {% if user == object.owner %}
+            <form action="{% url 'delete' object.pk %}" style='display: inline-block;' method="POST">
+              {% csrf_token %}
+              <button class="btn btn-danger">削除</button>
+            </form>
+          {% endif %}
+          <form action="{% url 'favorite' object.pk %}" style='display: inline-block;' method="POST">
+            {% csrf_token %}
+            <button class="btn btn-warning">お気に入り:{{ object.favorite_count }}</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

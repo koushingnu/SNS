@@ -1,0 +1,10 @@
+{% extends 'base.html'%}
+
+{% block content %}
+  <h1>メールアドレスの変更フォーム</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="submit btn btn-primary">変更する</button>
+  </form>
+{% endblock %}

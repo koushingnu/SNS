@@ -1,0 +1,77 @@
+{% extends 'base.html'%}
+{% block content %}
+  <div class="container">
+    <h1>Home</h1>
+
+    {% if user.is_authenticated %}
+      <p>こんにちは！<img src="{{ user.avator.url }}" style='width:50px;height:auto'>{{ user.username }}
+        さん
+      </p>
+      <a href="{% url 'logout' %}">ログアウト</a>
+    {% else %}
+      <p>ログインしていません。</p>
+      <a href="{% url 'login' %}">ログイン</a>
+      <a href="{% url 'signup' %}">登録</a>
+    {% endif %}
+    {% if messages %}
+      <ul class="list-unstyled">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <h2>投稿一覧</h2>
+    {% for item in object_list %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ item.owner }}</h5>
+          <p class="card-text">{{ item.content }}</p>
+          <p class="card-text  text-right">{{ item.created_at }}</p>
+          <a href="post/{{ item.pk }}" class="btn btn-primary">詳細</a>
+        </div>
+      </div>
+    {% endfor %}
+    <nav>
+      <ul class="pagination">
+        {% if object_list.has_previous %}
+          <li>
+            <a class="page-link text-primary d-inline-block" href="{{ object_list.previous_page_number }}">前</a>
+          </li>
+        {% else %}
+          <li class="disabled">
+            <div class="page-link text-secondary d-inline-block disabled" href="#">前</div>
+          </li>
+        {% endif %}
+
+        {% for link_page in object_list.paginator.page_range %}
+          {% if link_page %}
+            {% if link_page == object_list.number %}
+              <li class="disabled">
+                <div class="page-link text-secondary d-inline-block disabled" href="#">
+                  {{ link_page }}
+                </div>
+              </li>
+            {% else %}
+              <li>
+                <a class = "page-link text-primary d-inline-block "href="{{ link_page }}">{{ link_page }}</a>
+              </li>
+            {% endif %}
+          {% else %}
+            <li class="disabled">
+              <a class="page-link text-secondary d-inline-block text-muted" href="#">･･･</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        {% if object_list.has_next %}
+          <li>
+            <a class="page-link text-primary d-inline-block" href="{{ object_list.next_page_number }}" >次</a>
+          </li>
+          {% else %}
+          <li class="disabled">
+            <a class="page-link text-secondary d-inline-block disabled" href="#" >次</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+{% endblock %}
