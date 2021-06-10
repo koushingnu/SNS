@@ -4,7 +4,7 @@
     <h1>Home</h1>
 
     {% if user.is_authenticated %}
-      <p>こんにちは！<img src="{{ user.avator.url }}" style='width:50px;height:auto'>{{ user.username }}
+      <p>こんにちは！{{ user.username }}
         さん
       </p>
       <a href="{% url 'logout' %}">ログアウト</a>
